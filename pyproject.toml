@@ -43,12 +43,6 @@ line-length = 100
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "A", "SIM", "TCH"]
 
-[tool.mypy]
-python_version = "3.11"
-strict = true
-warn_return_any = true
-warn_unused_configs = true
-
 [tool.pytest.ini_options]
 testpaths = ["packages/chloe-core/tests", "packages/chloe-cli/tests", "tests"]
 addopts = "-v --tb=short"

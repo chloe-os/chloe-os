@@ -9,18 +9,18 @@ no external dependencies required to view it.
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 
 from chloe_core.models import (
-    AnnotatedVariantSet,
-    NeoantigenCandidate,
-    PipelineConfig,
-    PredictionResults,
-    RankedNeoantigens,
-    VariantSet,
+    AnnotatedVariantSet,  # noqa: TCH001
+    NeoantigenCandidate,  # noqa: TCH001
+    PipelineConfig,  # noqa: TCH001
+    PredictionResults,  # noqa: TCH001
+    RankedNeoantigens,  # noqa: TCH001
+    VariantSet,  # noqa: TCH001
 )
 
 logger = logging.getLogger(__name__)
@@ -59,7 +59,6 @@ def _format_ic50(value: float | None) -> str:
 def _build_candidate_details(candidate: NeoantigenCandidate) -> dict:
     """Flatten a NeoantigenCandidate into a plain dict for template use."""
     av = candidate.variant_prediction.annotated_variant
-    best_mut = candidate.variant_prediction.best_mutant_binding
     best_wt = candidate.variant_prediction.best_wildtype_binding
 
     return {
@@ -77,9 +76,7 @@ def _build_candidate_details(candidate: NeoantigenCandidate) -> dict:
         "vaf_score": round(candidate.vaf_score, 4),
         "consequence_score": round(candidate.consequence_score, 4),
         "expression_score": (
-            round(candidate.expression_score, 4)
-            if candidate.expression_score is not None
-            else None
+            round(candidate.expression_score, 4) if candidate.expression_score is not None else None
         ),
         "variant_id": av.variant.variant_id,
         "chrom": av.variant.chrom,
@@ -108,9 +105,7 @@ def _build_candidate_details(candidate: NeoantigenCandidate) -> dict:
                 "ic50": p.ic50,
                 "ic50_fmt": _format_ic50(p.ic50),
                 "percentile_rank": (
-                    round(p.percentile_rank, 2)
-                    if p.percentile_rank is not None
-                    else None
+                    round(p.percentile_rank, 2) if p.percentile_rank is not None else None
                 ),
                 "binding_category": p.binding_category.replace("_", " ").title(),
                 "is_strong_binder": p.is_strong_binder,
@@ -137,7 +132,7 @@ def _build_template_context(
 
     return {
         # Metadata
-        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+        "generated_at": datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC"),
         "chloe_version": "0.1.0",
         # Executive summary numbers
         "total_variants_raw": variant_set.total_variants_raw,
@@ -206,9 +201,7 @@ def generate_report(
     """
     logger.info("Generating HTML report → %s", output_path)
 
-    context = _build_template_context(
-        ranked, variant_set, annotated_set, predictions, config
-    )
+    context = _build_template_context(ranked, variant_set, annotated_set, predictions, config)
 
     env = Environment(
         loader=FileSystemLoader(str(_TEMPLATE_DIR)),

@@ -71,20 +71,29 @@ def test_annotated_variant_set_protein_changing():
 
 def test_binding_prediction_categories():
     strong = BindingPrediction(
-        peptide="SIINFEKL", allele="DLA-88*001:01", ic50=10.0,
-        is_binder=True, is_strong_binder=True,
+        peptide="SIINFEKL",
+        allele="DLA-88*001:01",
+        ic50=10.0,
+        is_binder=True,
+        is_strong_binder=True,
     )
     assert strong.binding_category == "strong"
 
     weak = BindingPrediction(
-        peptide="SIINFEKL", allele="DLA-88*001:01", ic50=200.0,
-        is_binder=True, is_strong_binder=False,
+        peptide="SIINFEKL",
+        allele="DLA-88*001:01",
+        ic50=200.0,
+        is_binder=True,
+        is_strong_binder=False,
     )
     assert weak.binding_category == "weak"
 
     non = BindingPrediction(
-        peptide="SIINFEKL", allele="DLA-88*001:01", ic50=5000.0,
-        is_binder=False, is_strong_binder=False,
+        peptide="SIINFEKL",
+        allele="DLA-88*001:01",
+        ic50=5000.0,
+        is_binder=False,
+        is_strong_binder=False,
     )
     assert non.binding_category == "non-binder"
 

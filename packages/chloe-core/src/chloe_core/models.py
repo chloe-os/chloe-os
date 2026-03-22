@@ -7,11 +7,11 @@ providing a typed contract between stages.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 
-class VariantConsequence(str, Enum):
+class VariantConsequence(StrEnum):
     """Classification of a variant's effect on protein sequence."""
 
     MISSENSE = "missense_variant"
@@ -24,7 +24,7 @@ class VariantConsequence(str, Enum):
     OTHER = "other"
 
 
-class Species(str, Enum):
+class Species(StrEnum):
     """Supported species."""
 
     CANINE = "canine"

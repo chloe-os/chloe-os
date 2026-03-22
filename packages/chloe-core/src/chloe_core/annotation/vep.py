@@ -471,7 +471,7 @@ def _extract_peptide_context(
         wt_peptide = full_protein[start:end_wt]
 
         # Build the mutant peptide by substituting in the mutant residue(s).
-        mut_protein = full_protein[:pos] + mut_aa + full_protein[pos + len(wt_aa):]
+        mut_protein = full_protein[:pos] + mut_aa + full_protein[pos + len(wt_aa) :]
         end_mut = min(len(mut_protein), pos + len(mut_aa) + flank)
         mut_peptide = mut_protein[start:end_mut]
 

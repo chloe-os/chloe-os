@@ -231,10 +231,7 @@ def rank_neoantigens(
     # Validate weight keys
     expected_keys = {"binding", "agretopicity", "vaf", "consequence"}
     if set(weights.keys()) != expected_keys:
-        raise ValueError(
-            f"weights must contain exactly {expected_keys}; "
-            f"got {set(weights.keys())}"
-        )
+        raise ValueError(f"weights must contain exactly {expected_keys}; got {set(weights.keys())}")
 
     total_evaluated = len(predictions.variant_predictions)
     total_binders = predictions.total_binders

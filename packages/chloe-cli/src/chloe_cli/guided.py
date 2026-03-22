@@ -9,12 +9,11 @@ from __future__ import annotations
 from pathlib import Path
 
 import typer
+from chloe_core.models import BREED_DLA_ALLELES, PipelineConfig, Species
 from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Confirm, Prompt
 from rich.table import Table
-
-from chloe_core.models import BREED_DLA_ALLELES, PipelineConfig, Species
 
 from chloe_cli.explain import (
     explain_annotation,
@@ -245,9 +244,7 @@ def guided() -> None:
         )
 
     n_candidates = len(ranked.candidates)
-    console.print(
-        f"  [green]\u2713[/] Identified [bold]{n_candidates:,}[/] neoantigen candidates"
-    )
+    console.print(f"  [green]\u2713[/] Identified [bold]{n_candidates:,}[/] neoantigen candidates")
     _learn_more(explain_neoantigens(n_candidates))
 
     # Show top candidates in a table

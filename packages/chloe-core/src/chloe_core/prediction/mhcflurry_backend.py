@@ -113,9 +113,7 @@ class MHCflurryPredictor(MHCPredictor):
     def version(self) -> str | None:
         return self._version
 
-    def predict(
-        self, peptides: list[str], alleles: list[str]
-    ) -> list[BindingPrediction]:
+    def predict(self, peptides: list[str], alleles: list[str]) -> list[BindingPrediction]:
         """Predict binding for each peptide against each allele.
 
         Returns one :class:`BindingPrediction` per peptide-allele pair.
@@ -190,9 +188,7 @@ class MHCflurryPredictor(MHCPredictor):
         except Exception:
             return None
 
-    def _resolve_alleles(
-        self, alleles: list[str]
-    ) -> list[tuple[str, str]]:
+    def _resolve_alleles(self, alleles: list[str]) -> list[tuple[str, str]]:
         """Map each requested allele to one MHCflurry understands.
 
         Returns a list of ``(original_name, resolved_name)`` tuples.
@@ -211,14 +207,11 @@ class MHCflurryPredictor(MHCPredictor):
             if self._use_hla_proxy and allele in self._dla_to_hla_map:
                 proxy = self._dla_to_hla_map[allele]
                 if proxy in self._supported_alleles:
-                    logger.info(
-                        "Mapping DLA allele %s -> HLA proxy %s", allele, proxy
-                    )
+                    logger.info("Mapping DLA allele %s -> HLA proxy %s", allele, proxy)
                     resolved.append((allele, proxy))
                     continue
                 logger.warning(
-                    "HLA proxy %s for DLA allele %s is not supported by "
-                    "MHCflurry — skipping",
+                    "HLA proxy %s for DLA allele %s is not supported by MHCflurry — skipping",
                     proxy,
                     allele,
                 )
@@ -226,8 +219,7 @@ class MHCflurryPredictor(MHCPredictor):
 
             # 3. Allele cannot be resolved.
             logger.warning(
-                "Allele %s is not supported by MHCflurry and no HLA proxy "
-                "is configured — skipping",
+                "Allele %s is not supported by MHCflurry and no HLA proxy is configured — skipping",
                 allele,
             )
 

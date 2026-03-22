@@ -35,9 +35,7 @@ class MHCPredictor(ABC):
     """
 
     @abstractmethod
-    def predict(
-        self, peptides: list[str], alleles: list[str]
-    ) -> list[BindingPrediction]:
+    def predict(self, peptides: list[str], alleles: list[str]) -> list[BindingPrediction]:
         """Predict binding affinities for every peptide-allele combination.
 
         Parameters
@@ -182,8 +180,7 @@ def predict_variants(
 
     protein_changing = annotated_set.protein_changing_variants
     logger.info(
-        "Running MHC predictions: %d protein-changing variants, "
-        "%d alleles, peptide lengths %s",
+        "Running MHC predictions: %d protein-changing variants, %d alleles, peptide lengths %s",
         len(protein_changing),
         len(alleles),
         peptide_lengths,

@@ -8,15 +8,14 @@ rank_neoantigens -> generate_report.
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated
 
 import typer
+from chloe_core.models import BREED_DLA_ALLELES, PipelineConfig, Species
 from rich.console import Console
 from rich.panel import Panel
-from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
+from rich.progress import BarColumn, Progress, SpinnerColumn, TaskProgressColumn, TextColumn
 from rich.table import Table
-
-from chloe_core.models import BREED_DLA_ALLELES, PipelineConfig, Species
 
 console = Console()
 
@@ -27,7 +26,7 @@ def run(
         typer.Option("--vcf", help="Path to the tumor VCF file.", exists=True, readable=True),
     ],
     normal: Annotated[
-        Optional[Path],
+        Path | None,
         typer.Option("--normal", help="Path to the matched-normal VCF file.", exists=True),
     ] = None,
     species: Annotated[
@@ -35,8 +34,8 @@ def run(
         typer.Option("--species", help="Species (currently only 'canine')."),
     ] = "canine",
     breed: Annotated[
-        Optional[str],
-        typer.Option("--breed", help="Breed name for DLA allele selection (e.g. staffy, labrador)."),
+        str | None,
+        typer.Option("--breed", help="Breed for DLA allele selection (e.g. staffy, labrador)."),
     ] = None,
     predictor: Annotated[
         str,
@@ -64,9 +63,9 @@ def run(
     # ------------------------------------------------------------------
     try:
         species_enum = Species(species)
-    except ValueError:
+    except ValueError as err:
         console.print(f"[bold red]Error:[/] Unknown species '{species}'.")
-        raise typer.Exit(code=1)
+        raise typer.Exit(code=1) from err
 
     alleles = BREED_DLA_ALLELES.get(breed or "default", BREED_DLA_ALLELES["default"])
 

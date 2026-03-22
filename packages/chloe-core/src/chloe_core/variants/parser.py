@@ -75,10 +75,7 @@ def parse_vcf(path: str) -> list[Variant]:
         quality = record.QUAL if record.QUAL is not None else 0.0
 
         # Determine filter status — cyvcf2 returns None when PASS
-        if record.FILTER is None:
-            filter_status = "PASS"
-        else:
-            filter_status = str(record.FILTER)
+        filter_status = "PASS" if record.FILTER is None else str(record.FILTER)
 
         # Extract read depth (DP) — try INFO first, then FORMAT
         read_depth = _extract_depth(record)
@@ -214,11 +211,7 @@ def identify_somatic(
         (v.chrom, v.pos, v.ref, v.alt) for v in normal_variants
     }
 
-    somatic = [
-        v
-        for v in tumor_variants
-        if (v.chrom, v.pos, v.ref, v.alt) not in normal_keys
-    ]
+    somatic = [v for v in tumor_variants if (v.chrom, v.pos, v.ref, v.alt) not in normal_keys]
 
     logger.info(
         "Somatic filtering: %d tumor, %d normal -> %d somatic variant(s)",
@@ -289,9 +282,7 @@ def load_variants(
 
     total_filtered = len(tumor_variants)
 
-    logger.info(
-        "Stage 1 complete: %d raw -> %d final variant(s)", total_raw, total_filtered
-    )
+    logger.info("Stage 1 complete: %d raw -> %d final variant(s)", total_raw, total_filtered)
 
     return VariantSet(
         variants=tumor_variants,

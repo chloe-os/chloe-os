@@ -8,8 +8,6 @@ Provides the ``chloe`` command with two primary sub-commands:
 
 from __future__ import annotations
 
-from typing import Optional
-
 import typer
 from rich.console import Console
 from rich.panel import Panel
@@ -46,9 +44,9 @@ def guided() -> None:
 @app.command()
 def run(
     vcf: str = typer.Option(..., "--vcf", help="Path to the tumor VCF file."),
-    normal: Optional[str] = typer.Option(None, "--normal", help="Path to the matched-normal VCF."),
+    normal: str | None = typer.Option(None, "--normal", help="Path to the matched-normal VCF."),
     species: str = typer.Option("canine", "--species", help="Species (currently only 'canine')."),
-    breed: Optional[str] = typer.Option(None, "--breed", help="Breed for DLA allele selection."),
+    breed: str | None = typer.Option(None, "--breed", help="Breed for DLA allele selection."),
     predictor: str = typer.Option("mhcflurry", "--predictor", help="MHC predictor backend."),
     top_n: int = typer.Option(20, "--top-n", help="Number of top candidates to report."),
     output: str = typer.Option("report.html", "--output", "-o", help="Output report file path."),
@@ -99,7 +97,7 @@ def version() -> None:
 @app.command()
 def setup(
     species: str = typer.Option("canine", "--species", help="Species to download data for."),
-    assembly: Optional[str] = typer.Option(None, "--assembly", help="Genome assembly name."),
+    assembly: str | None = typer.Option(None, "--assembly", help="Genome assembly name."),
 ) -> None:
     """Download reference genome data and annotation databases.
 
