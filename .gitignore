@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# uv
+.python-version
+uv.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker/*.log
+
+# Genome data (large files - downloaded on setup)
+*.fa
+*.fa.gz
+*.fai
+*.gtf
+*.gtf.gz
+*.dict
+genome_cache/
+
+# User data
+*.vcf
+*.vcf.gz
+!examples/**/*.vcf
+
+# Reports (generated)
+*_report.html
+
+# Environment
+.env
+.env.local
+
+# Letta
+.letta/

@@ -1,0 +1,48 @@
+site_name: Chloe OS
+site_description: Open Source Intelligence for Lifelong Pet Health
+site_url: https://chloe-os.github.io/chloe-os/
+
+theme:
+  name: material
+  palette:
+    primary: teal
+    accent: amber
+  features:
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+    - search.highlight
+
+nav:
+  - Home: index.md
+  - Pet Owner Guide:
+    - Getting Started: guide/getting-started.md
+    - Getting Sequencing Done: guide/getting-sequencing.md
+    - Understanding Your Results: guide/understanding-results.md
+    - Next Steps: guide/next-steps.md
+  - The Science:
+    - DNA & Mutations: science/dna-and-mutations.md
+    - What Are Neoantigens?: science/neoantigens.md
+    - MHC Binding: science/mhc-binding.md
+    - mRNA Vaccines: science/mrna-vaccines.md
+    - Canine Immunology: science/canine-immunology.md
+  - For Developers:
+    - Architecture: developer/architecture.md
+    - API Reference: developer/api-reference.md
+    - Contributing: developer/contributing.md
+  - Ethics & Safety:
+    - Disclaimers: ethics/disclaimers.md
+    - When to See a Vet: ethics/when-to-see-a-vet.md
+    - Responsible Use: ethics/responsible-use.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - attr_list
+  - md_in_html

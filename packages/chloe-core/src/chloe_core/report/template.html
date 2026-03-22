@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chloe OS — Neoantigen Analysis Report</title>
+<style>
+/* ===================================================================
+   Chloe OS Report — Self-contained CSS
+   =================================================================== */
+
+:root {
+  --color-primary: #0f766e;
+  --color-primary-light: #14b8a6;
+  --color-primary-dark: #0d5c56;
+  --color-primary-bg: #f0fdfa;
+  --color-accent: #0891b2;
+  --color-accent-bg: #ecfeff;
+  --color-danger: #dc2626;
+  --color-danger-bg: #fef2f2;
+  --color-danger-border: #fca5a5;
+  --color-warning: #d97706;
+  --color-warning-bg: #fffbeb;
+  --color-warning-border: #fcd34d;
+  --color-success: #16a34a;
+  --color-success-bg: #f0fdf4;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", "Cascadia Code", "Fira Code", Consolas, "Courier New", monospace;
+  --radius: 8px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 15px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-gray-800);
+  background: var(--color-gray-50);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Layout */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---- Header ---- */
+.report-header {
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 50%, var(--color-accent) 100%);
+  color: #fff;
+  padding: 48px 0 40px;
+}
+
+.report-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.report-header .subtitle {
+  font-size: 1.15rem;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+.report-header .meta {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* ---- Navigation ---- */
+.report-nav {
+  background: #fff;
+  border-bottom: 1px solid var(--color-gray-200);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.report-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  padding: 0;
+}
+
+.report-nav a {
+  display: block;
+  padding: 12px 18px;
+  color: var(--color-gray-600);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.report-nav a:hover {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary-light);
+}
+
+/* ---- Sections ---- */
+.section {
+  background: #fff;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius);
+  margin: 24px 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.section-header {
+  padding: 20px 28px 16px;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.section-header h2 {
+  font-size: 1.25rem;
+  font-weight: 650;
+  color: var(--color-gray-900);
+  letter-spacing: -0.01em;
+}
+
+.section-header .section-desc {
+  font-size: 0.88rem;
+  color: var(--color-gray-500);
+  margin-top: 2px;
+}
+
+.section-body { padding: 24px 28px; }
+
+/* ---- Disclaimer ---- */
+.disclaimer-box {
+  background: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-border);
+  border-left: 4px solid var(--color-danger);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin: 24px 0;
+}
+
+.disclaimer-box h3 {
+  color: var(--color-danger);
+  font-size: 1rem;
+  font-weight: 650;
+  margin-bottom: 8px;
+}
+
+.disclaimer-box p {
+  color: var(--color-gray-700);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+/* ---- Stat cards ---- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: var(--color-gray-50);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-card .stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.1;
+}
+
+.stat-card .stat-label {
+  font-size: 0.82rem;
+  color: var(--color-gray-500);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+.stat-card.highlight {
+  background: var(--color-primary-bg);
+  border-color: var(--color-primary-light);
+}
+
+.stat-card.highlight .stat-value {
+  color: var(--color-primary-dark);
+}
+
+/* ---- Config table ---- */
+.config-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+@media (max-width: 640px) {
+  .config-grid { grid-template-columns: 1fr; }
+}
+
+.config-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-gray-100);
+  gap: 12px;
+}
+
+.config-item:nth-child(odd) { padding-right: 24px; }
+.config-item:nth-child(even) { padding-left: 24px; border-left: 1px solid var(--color-gray-100); }
+
+@media (max-width: 640px) {
+  .config-item:nth-child(odd) { padding-right: 0; }
+  .config-item:nth-child(even) { padding-left: 0; border-left: none; }
+}
+
+.config-item .config-label {
+  font-size: 0.88rem;
+  color: var(--color-gray-500);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.config-item .config-value {
+  font-size: 0.88rem;
+  color: var(--color-gray-800);
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ---- Tables ---- */
+.data-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.data-table th {
+  background: var(--color-gray-50);
+  color: var(--color-gray-600);
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--color-gray-200);
+  white-space: nowrap;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-gray-100);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+  background: var(--color-gray-50);
+}
+
+.data-table .mono {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.data-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Row binding-strength colours */
+.data-table tr.binding-strong {
+  background: var(--color-success-bg);
+}
+.data-table tr.binding-strong:hover {
+  background: #dcfce7;
+}
+.data-table tr.binding-weak {
+  background: var(--color-warning-bg);
+}
+.data-table tr.binding-weak:hover {
+  background: #fef3c7;
+}
+
+/* ---- Badges ---- */
+.badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-strong {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.badge-weak {
+  background: #fef3c7;
+  color: #a16207;
+}
+
+.badge-non {
+  background: var(--color-gray-100);
+  color: var(--color-gray-500);
+}
+
+/* ---- Details / Expandable ---- */
+.candidate-details {
+  margin-bottom: 16px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.candidate-details summary {
+  padding: 14px 20px;
+  background: var(--color-gray-50);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--color-gray-800);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+  transition: background 0.15s;
+  list-style: none;
+}
+
+.candidate-details summary::-webkit-details-marker { display: none; }
+
+.candidate-details summary::before {
+  content: "\25B6";
+  font-size: 0.65rem;
+  color: var(--color-gray-400);
+  transition: transform 0.2s;
+}
+
+.candidate-details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.candidate-details summary:hover {
+  background: var(--color-gray-100);
+}
+
+.candidate-details .detail-body {
+  padding: 20px;
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 32px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 640px) {
+  .detail-grid { grid-template-columns: 1fr; }
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 0.86rem;
+}
+
+.detail-item .dl {
+  color: var(--color-gray-500);
+}
+
+.detail-item .dv {
+  font-weight: 600;
+  color: var(--color-gray-800);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.detail-sub-heading {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-gray-600);
+  margin: 16px 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ---- Vet summary ---- */
+.vet-box {
+  background: var(--color-accent-bg);
+  border: 1px solid #a5f3fc;
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.vet-box h3 {
+  color: var(--color-accent);
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+}
+
+.vet-box ul {
+  margin: 8px 0 0 18px;
+  color: var(--color-gray-700);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.vet-box ul li { margin-bottom: 4px; }
+
+.vet-box .vet-next-steps {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #a5f3fc;
+}
+
+.vet-box .vet-next-steps h4 {
+  font-size: 0.92rem;
+  color: var(--color-primary-dark);
+  margin-bottom: 8px;
+}
+
+/* ---- Methodology ---- */
+.stage-list {
+  counter-reset: stage;
+  list-style: none;
+}
+
+.stage-list li {
+  position: relative;
+  padding: 12px 0 12px 56px;
+  border-bottom: 1px solid var(--color-gray-100);
+  font-size: 0.92rem;
+}
+
+.stage-list li:last-child { border-bottom: none; }
+
+.stage-list li::before {
+  counter-increment: stage;
+  content: counter(stage);
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-primary-light);
+}
+
+.stage-list li strong {
+  color: var(--color-gray-900);
+}
+
+/* ---- Footer ---- */
+.report-footer {
+  text-align: center;
+  padding: 32px 0 48px;
+  font-size: 0.82rem;
+  color: var(--color-gray-400);
+}
+
+.report-footer a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.report-footer a:hover { text-decoration: underline; }
+
+/* ---- Print styles ---- */
+@media print {
+  .report-nav { display: none; }
+  .section { break-inside: avoid; box-shadow: none; border-color: #ddd; }
+  body { background: #fff; font-size: 12px; }
+  .report-header { background: var(--color-primary); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="report-header">
+  <div class="container">
+    <h1>Chloe OS &mdash; Neoantigen Analysis Report</h1>
+    <p class="subtitle">Personalized Cancer Vaccine Candidate Identification</p>
+    <p class="meta">Generated {{ generated_at }} &middot; Chloe OS v{{ chloe_version }}</p>
+  </div>
+</header>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav class="report-nav">
+  <div class="container">
+    <ul>
+      <li><a href="#disclaimer">Disclaimer</a></li>
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="#pipeline">Pipeline</a></li>
+      <li><a href="#candidates">Candidates</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#vet-summary">Vet Summary</a></li>
+      <li><a href="#methodology">Methodology</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="container">
+
+  <!-- ============================================================
+       DISCLAIMER
+       ============================================================ -->
+  <div id="disclaimer" class="disclaimer-box">
+    <h3>Important Disclaimer</h3>
+    <p>
+      This is a <strong>research tool</strong> designed to assist in the identification
+      of potential neoantigen candidates for personalized cancer vaccines in dogs.
+      The results presented here are <strong>not veterinary medical advice</strong>.
+      Predictions are based on computational models and have not been experimentally
+      validated. <strong>Always consult a qualified veterinary oncologist</strong>
+      before making any treatment decisions based on this report.
+    </p>
+  </div>
+
+  <!-- ============================================================
+       EXECUTIVE SUMMARY
+       ============================================================ -->
+  <section id="summary" class="section">
+    <div class="section-header">
+      <h2>Executive Summary</h2>
+      <p class="section-desc">High-level overview of the neoantigen analysis</p>
+    </div>
+    <div class="section-body">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-value">{{ total_variants_raw }}</div>
+          <div class="stat-label">Total Variants in VCF</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ somatic_count }}</div>
+          <div class="stat-label">Somatic Variants (Filtered)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ total_with_protein_change }}</div>
+          <div class="stat-label">Protein-Changing Variants</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ total_binders }}</div>
+          <div class="stat-label">MHC Binders Found</div>
+        </div>
+        <div class="stat-card highlight">
+          <div class="stat-value">{{ num_candidates }}</div>
+          <div class="stat-label">Ranked Candidates</div>
+        </div>
+        <div class="stat-card highlight">
+          <div class="stat-value">{{ strong_count }}</div>
+          <div class="stat-label">Strong Binders</div>
+        </div>
+      </div>
+
+      <p style="margin-top:20px; font-size:0.92rem; color:var(--color-gray-600); line-height:1.7;">
+        From <strong>{{ total_variants_raw }}</strong> raw variant calls,
+        <strong>{{ somatic_count }}</strong> somatic variants passed quality filters.
+        Of these, <strong>{{ total_with_protein_change }}</strong> were predicted to
+        cause a change in the protein sequence. After MHC binding prediction,
+        <strong>{{ total_binders }}</strong> variants produced at least one peptide
+        predicted to bind DLA class I molecules. The pipeline ranked
+        <strong>{{ num_candidates }}</strong> neoantigen candidates, of which
+        <strong>{{ strong_count }}</strong> are predicted strong binders
+        (IC50 &lt; {{ strong_binding_threshold }} nM) and
+        <strong>{{ weak_count }}</strong> are weak binders
+        (IC50 &lt; {{ binding_threshold }} nM).
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PIPELINE OVERVIEW
+       ============================================================ -->
+  <section id="pipeline" class="section">
+    <div class="section-header">
+      <h2>Pipeline Overview</h2>
+      <p class="section-desc">Parameters and tools used in this analysis</p>
+    </div>
+    <div class="section-body">
+      <div class="config-grid">
+        <div class="config-item">
+          <span class="config-label">Species</span>
+          <span class="config-value">{{ species }}</span>
+        </div>
+        <div class="config-item">
+          <span class="config-label">Genome Assembly</span>
+          <span class="config-value">{{ assembly }}</span>
+        </div>
+        <div class="config-item">
+          <span class="config-label">Breed</span>
+          <span class="config-value">{{ breed }}</span>
+        </div>
+        <div class="config-item">
+          <span class="config-label">MHC Predictor</span>
+          <span class="config-value">{{ predictor }}</span>
+        </div>
+        <div class="config-item">
+          <span class="config-label">Predictor Version</span>
+          <span class="config-value">{{ predictor_version }}</span>
+        </div>
+        <div class="config-item">
+          <span class="config-label">VEP Version</span>
+          <span class="config-value">{{ vep_version }}</span>
+        </div>
+        <div class="config-item">
+          <span class="config-label">Peptide Lengths</span>
+          <span class="config-value">{{ peptide_lengths }}</span>
+        </div>
+        <div class="config-item">
+          <span class="config-label">Binding Threshold</span>
+          <span class="config-value">&lt; {{ binding_threshold }} nM</span>
+        </div>
+        <div class="config-item">
+          <span class="config-label">Strong Binding Threshold</span>
+          <span class="config-value">&lt; {{ strong_binding_threshold }} nM</span>
+        </div>
+        <div class="config-item">
+          <span class="config-label">Min Variant Quality</span>
+          <span class="config-value">{{ min_quality }}</span>
+        </div>
+        <div class="config-item">
+          <span class="config-label">Min Read Depth</span>
+          <span class="config-value">{{ min_read_depth }}</span>
+        </div>
+        <div class="config-item">
+          <span class="config-label">Min Allele Frequency</span>
+          <span class="config-value">{{ min_allele_frequency }}</span>
+        </div>
+      </div>
+
+      {% if alleles_used %}
+      <p style="margin-top:16px; font-size:0.86rem; color:var(--color-gray-500);">
+        <strong>DLA Alleles Evaluated:</strong>
+        {% for allele in alleles_used %}
+          <span class="mono" style="background:var(--color-gray-100); padding:1px 6px; border-radius:4px; margin:0 2px;">{{ allele }}</span>
+        {% endfor %}
+      </p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TOP CANDIDATES TABLE
+       ============================================================ -->
+  <section id="candidates" class="section">
+    <div class="section-header">
+      <h2>Top Neoantigen Candidates</h2>
+      <p class="section-desc">Ranked by composite score — higher is better</p>
+    </div>
+    <div class="section-body" style="padding:0;">
+      <div class="data-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Gene</th>
+              <th>Protein Change</th>
+              <th>Best Peptide</th>
+              <th>Best Allele</th>
+              <th class="num">IC50 (nM)</th>
+              <th>Binding</th>
+              <th class="num">Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in candidates %}
+            <tr class="{% if c.binding_category == 'Strong' %}binding-strong{% elif c.binding_category == 'Weak' %}binding-weak{% endif %}">
+              <td style="font-weight:700; color:var(--color-primary);">{{ c.rank }}</td>
+              <td style="font-weight:600;">{{ c.gene }}</td>
+              <td class="mono">{{ c.protein_change }}</td>
+              <td class="mono">{{ c.best_peptide }}</td>
+              <td class="mono" style="font-size:0.78rem;">{{ c.best_allele }}</td>
+              <td class="num mono">{{ c.best_ic50_fmt }}</td>
+              <td>
+                {% if c.binding_category == 'Strong' %}
+                  <span class="badge badge-strong">Strong</span>
+                {% elif c.binding_category == 'Weak' %}
+                  <span class="badge badge-weak">Weak</span>
+                {% else %}
+                  <span class="badge badge-non">Non-binder</span>
+                {% endif %}
+              </td>
+              <td class="num" style="font-weight:700;">{{ c.composite_score }}</td>
+            </tr>
+            {% endfor %}
+            {% if not candidates %}
+            <tr>
+              <td colspan="8" style="text-align:center; padding:40px; color:var(--color-gray-400);">
+                No neoantigen candidates were identified in this analysis.
+              </td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CANDIDATE DETAILS (expandable)
+       ============================================================ -->
+  <section id="details" class="section">
+    <div class="section-header">
+      <h2>Candidate Details</h2>
+      <p class="section-desc">Expand each candidate to see full prediction data</p>
+    </div>
+    <div class="section-body">
+      {% for c in candidates %}
+      <details class="candidate-details">
+        <summary>
+          <span style="color:var(--color-primary); min-width:28px;">#{{ c.rank }}</span>
+          <span>{{ c.gene }} {{ c.protein_change }}</span>
+          <span style="margin-left:auto;">
+            {% if c.binding_category == 'Strong' %}
+              <span class="badge badge-strong">Strong</span>
+            {% elif c.binding_category == 'Weak' %}
+              <span class="badge badge-weak">Weak</span>
+            {% else %}
+              <span class="badge badge-non">Non-binder</span>
+            {% endif %}
+          </span>
+        </summary>
+        <div class="detail-body">
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="dl">Variant</span>
+              <span class="dv">{{ c.variant_id }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="dl">Consequence</span>
+              <span class="dv">{{ c.consequence }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="dl">Impact</span>
+              <span class="dv">{{ c.impact }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="dl">Transcript</span>
+              <span class="dv">{{ c.transcript_id }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="dl">Best Mutant IC50</span>
+              <span class="dv">{{ c.best_ic50_fmt }} nM</span>
+            </div>
+            <div class="detail-item">
+              <span class="dl">Best Wildtype IC50</span>
+              <span class="dv">{{ c.best_wt_ic50_fmt }} nM</span>
+            </div>
+            <div class="detail-item">
+              <span class="dl">Agretopicity</span>
+              <span class="dv">{% if c.agretopicity is not none %}{{ c.agretopicity }}{% else %}N/A{% endif %}</span>
+            </div>
+            {% if c.allele_frequency is not none %}
+            <div class="detail-item">
+              <span class="dl">Allele Frequency</span>
+              <span class="dv">{{ "%.2f"|format(c.allele_frequency) }}</span>
+            </div>
+            {% endif %}
+            {% if c.read_depth is not none %}
+            <div class="detail-item">
+              <span class="dl">Read Depth</span>
+              <span class="dv">{{ c.read_depth }}</span>
+            </div>
+            {% endif %}
+          </div>
+
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="dl">Binding Score</span>
+              <span class="dv">{{ c.binding_score }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="dl">Agretopicity Score</span>
+              <span class="dv">{{ c.agretopicity_score }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="dl">VAF Score</span>
+              <span class="dv">{{ c.vaf_score }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="dl">Consequence Score</span>
+              <span class="dv">{{ c.consequence_score }}</span>
+            </div>
+            {% if c.expression_score is not none %}
+            <div class="detail-item">
+              <span class="dl">Expression Score</span>
+              <span class="dv">{{ c.expression_score }}</span>
+            </div>
+            {% endif %}
+            <div class="detail-item">
+              <span class="dl">Composite Score</span>
+              <span class="dv" style="color:var(--color-primary); font-weight:700;">{{ c.composite_score }}</span>
+            </div>
+          </div>
+
+          <p class="detail-sub-heading">Peptide Sequences</p>
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="dl">Wildtype Peptide</span>
+              <span class="dv">{{ c.wildtype_peptide }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="dl">Mutant Peptide</span>
+              <span class="dv">{{ c.mutant_peptide }}</span>
+            </div>
+          </div>
+
+          {% if c.all_mutant_predictions %}
+          <p class="detail-sub-heading">All Mutant Binding Predictions</p>
+          <div class="data-table-wrapper">
+            <table class="data-table" style="font-size:0.82rem;">
+              <thead>
+                <tr>
+                  <th>Peptide</th>
+                  <th>Allele</th>
+                  <th class="num">IC50 (nM)</th>
+                  <th class="num">%ile Rank</th>
+                  <th>Binding</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for p in c.all_mutant_predictions %}
+                <tr class="{% if p.is_strong_binder %}binding-strong{% elif p.is_binder %}binding-weak{% endif %}">
+                  <td class="mono">{{ p.peptide }}</td>
+                  <td class="mono" style="font-size:0.78rem;">{{ p.allele }}</td>
+                  <td class="num mono">{{ p.ic50_fmt }}</td>
+                  <td class="num">{% if p.percentile_rank is not none %}{{ p.percentile_rank }}%{% else %}N/A{% endif %}</td>
+                  <td>
+                    {% if p.is_strong_binder %}
+                      <span class="badge badge-strong">Strong</span>
+                    {% elif p.is_binder %}
+                      <span class="badge badge-weak">Weak</span>
+                    {% else %}
+                      <span class="badge badge-non">Non-binder</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% endif %}
+        </div>
+      </details>
+      {% endfor %}
+
+      {% if not candidates %}
+      <p style="text-align:center; padding:32px; color:var(--color-gray-400);">
+        No candidate details to display.
+      </p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VET-READY SUMMARY
+       ============================================================ -->
+  <section id="vet-summary" class="section">
+    <div class="section-header">
+      <h2>Vet-Ready Summary</h2>
+      <p class="section-desc">Formatted for sharing with a veterinary oncologist</p>
+    </div>
+    <div class="section-body">
+      <div class="vet-box">
+        <h3>Key Findings</h3>
+        <ul>
+          <li>
+            <strong>{{ somatic_count }}</strong> somatic variants were identified
+            from the tumor sample ({{ species }}, {{ breed }}).
+          </li>
+          <li>
+            <strong>{{ total_with_protein_change }}</strong> variants are predicted
+            to alter the protein sequence and were evaluated for immunogenicity.
+          </li>
+          <li>
+            <strong>{{ num_candidates }}</strong> neoantigen candidates were ranked,
+            with <strong>{{ strong_count }}</strong> showing strong predicted binding
+            to DLA class I molecules (IC50 &lt; {{ strong_binding_threshold }} nM).
+          </li>
+          {% if candidates %}
+          <li>
+            The top candidate is in the <strong>{{ candidates[0].gene }}</strong> gene
+            ({{ candidates[0].protein_change }}) with a predicted best binding affinity
+            of <strong>{{ candidates[0].best_ic50_fmt }} nM</strong>
+            to allele <strong>{{ candidates[0].best_allele }}</strong>.
+          </li>
+          {% endif %}
+        </ul>
+
+        <div class="vet-next-steps">
+          <h4>Recommended Next Steps</h4>
+          <ul>
+            <li>Review the top candidates with a veterinary oncologist familiar with immunotherapy.</li>
+            <li>Consider experimental validation of top peptide candidates (e.g., ELISpot assay).</li>
+            <li>If proceeding to vaccine design, prioritise strong binders with high composite scores.</li>
+            <li>Evaluate the patient's DLA type if breed-specific alleles were assumed.</li>
+            <li>Discuss treatment timing, adjuvant selection, and monitoring plan with the clinical team.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       METHODOLOGY
+       ============================================================ -->
+  <section id="methodology" class="section">
+    <div class="section-header">
+      <h2>Methodology</h2>
+      <p class="section-desc">Overview of each pipeline stage</p>
+    </div>
+    <div class="section-body">
+      <ol class="stage-list">
+        <li>
+          <strong>Variant Calling &amp; Filtering</strong> &mdash;
+          Somatic variants are parsed from VCF files. Quality filters are applied
+          (min quality {{ min_quality }}, min depth {{ min_read_depth }}, min AF {{ min_allele_frequency }})
+          and, when a matched normal sample is available, germline variants are subtracted.
+        </li>
+        <li>
+          <strong>Variant Annotation</strong> &mdash;
+          Each somatic variant is annotated with the affected gene, transcript,
+          protein change, and surrounding peptide sequence using Ensembl VEP
+          or equivalent tools.
+        </li>
+        <li>
+          <strong>MHC Binding Prediction</strong> &mdash;
+          Mutant and wildtype peptides of lengths {{ peptide_lengths }} amino acids are
+          generated and evaluated for binding to {{ alleles_used | length }} DLA class I
+          alleles using <em>{{ predictor }}</em>.
+        </li>
+        <li>
+          <strong>Neoantigen Ranking</strong> &mdash;
+          Candidates are scored using a composite metric incorporating binding affinity,
+          agretopicity (mutant vs. wildtype binding ratio), variant allele frequency,
+          and variant consequence severity. Top candidates are ranked by this score.
+        </li>
+        <li>
+          <strong>Structural Analysis</strong> <span style="color:var(--color-gray-400);">(optional)</span> &mdash;
+          Predicted 3D structure of peptide-MHC complexes to assess binding
+          geometry and stability using protein language models.
+        </li>
+        <li>
+          <strong>AI Interpretation</strong> <span style="color:var(--color-gray-400);">(optional)</span> &mdash;
+          Large language model analysis of the results to provide context,
+          literature references, and plain-language summaries.
+        </li>
+        <li>
+          <strong>Report Generation</strong> &mdash;
+          This self-contained HTML report is produced, combining all pipeline
+          outputs into a format suitable for review by researchers and clinicians.
+        </li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="report-footer">
+  <div class="container">
+    <p>
+      Generated by <strong>Chloe OS v{{ chloe_version }}</strong><br>
+      Personalized cancer vaccine candidate identification for companion animals
+    </p>
+    <p style="margin-top:8px;">
+      <a href="https://github.com/chloe-os/chloe-os/blob/main/ETHICS.md">Ethics &amp; Responsible Use</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+[project]
+name = "chloe-cli"
+version = "0.1.0"
+description = "Command-line interface for Chloe OS personalized pet cancer vaccine pipeline"
+readme = "../../README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+authors = [
+    { name = "Chloe OS Contributors" },
+]
+dependencies = [
+    "chloe-core>=0.1.0",
+    "typer>=0.15.0",
+    "rich>=13.0.0",
+]
+
+[project.scripts]
+chloe = "chloe_cli.main:app"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.8.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/chloe_cli"]

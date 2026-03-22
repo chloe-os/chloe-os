@@ -1,0 +1,49 @@
+##fileformat=VCFv4.2
+##source=ChloeOS_ExampleData
+##reference=CanFam_GSD
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Total read depth">
+##INFO=<ID=AF,Number=A,Type=Float,Description="Allele frequency">
+##INFO=<ID=SOMATIC,Number=0,Type=Flag,Description="Somatic variant">
+##FILTER=<ID=PASS,Description="All filters passed">
+##FILTER=<ID=LowQual,Description="Quality below threshold">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Read depth">
+##FORMAT=<ID=AF,Number=1,Type=Float,Description="Allele frequency">
+##contig=<ID=chr1,length=122678785>
+##contig=<ID=chr2,length=85426708>
+##contig=<ID=chr3,length=91889043>
+##contig=<ID=chr5,length=88915250>
+##contig=<ID=chr7,length=80862353>
+##contig=<ID=chr9,length=61431566>
+##contig=<ID=chr10,length=69331447>
+##contig=<ID=chr13,length=63241923>
+##contig=<ID=chr15,length=64190966>
+##contig=<ID=chr18,length=55891832>
+##contig=<ID=chr22,length=61382202>
+##contig=<ID=chr26,length=39771492>
+##contig=<ID=chr30,length=40214260>
+##NOTE=This is synthetic example data for testing Chloe OS.
+##NOTE=These are NOT real variants from a real dog tumor.
+##NOTE=Variant positions and alleles are illustrative only.
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	TUMOR
+chr1	15234567	.	G	A	95	PASS	DP=120;AF=0.35;SOMATIC	GT:DP:AF	0/1:120:0.35
+chr1	28901234	.	C	T	88	PASS	DP=95;AF=0.42;SOMATIC	GT:DP:AF	0/1:95:0.42
+chr2	5678901	.	A	G	72	PASS	DP=80;AF=0.28;SOMATIC	GT:DP:AF	0/1:80:0.28
+chr2	34567890	.	T	C	91	PASS	DP=110;AF=0.38;SOMATIC	GT:DP:AF	0/1:110:0.38
+chr3	12345678	.	G	T	85	PASS	DP=100;AF=0.31;SOMATIC	GT:DP:AF	0/1:100:0.31
+chr5	45678901	.	C	A	78	PASS	DP=88;AF=0.25;SOMATIC	GT:DP:AF	0/1:88:0.25
+chr5	67890123	.	A	T	93	PASS	DP=115;AF=0.45;SOMATIC	GT:DP:AF	0/1:115:0.45
+chr7	23456789	.	G	C	67	PASS	DP=75;AF=0.22;SOMATIC	GT:DP:AF	0/1:75:0.22
+chr7	89012345	.	T	A	82	PASS	DP=92;AF=0.33;SOMATIC	GT:DP:AF	0/1:92:0.33
+chr9	12345678	.	C	G	90	PASS	DP=105;AF=0.40;SOMATIC	GT:DP:AF	0/1:105:0.40
+chr10	34567890	.	A	C	75	PASS	DP=82;AF=0.27;SOMATIC	GT:DP:AF	0/1:82:0.27
+chr10	56789012	.	G	A	86	PASS	DP=98;AF=0.36;SOMATIC	GT:DP:AF	0/1:98:0.36
+chr13	23456789	.	T	G	79	PASS	DP=85;AF=0.29;SOMATIC	GT:DP:AF	0/1:85:0.29
+chr15	45678901	.	C	T	94	PASS	DP=118;AF=0.44;SOMATIC	GT:DP:AF	0/1:118:0.44
+chr18	12345678	.	G	A	71	PASS	DP=78;AF=0.24;SOMATIC	GT:DP:AF	0/1:78:0.24
+chr18	34567890	.	A	G	87	PASS	DP=96;AF=0.37;SOMATIC	GT:DP:AF	0/1:96:0.37
+chr22	56789012	.	T	C	83	PASS	DP=91;AF=0.32;SOMATIC	GT:DP:AF	0/1:91:0.32
+chr26	12345678	.	C	A	76	PASS	DP=84;AF=0.26;SOMATIC	GT:DP:AF	0/1:84:0.26
+chr30	23456789	.	G	T	89	PASS	DP=102;AF=0.39;SOMATIC	GT:DP:AF	0/1:102:0.39
+chr1	45000000	.	A	G	45	LowQual	DP=15;AF=0.08	GT:DP:AF	0/1:15:0.08
+chr3	67000000	.	T	C	30	LowQual	DP=8;AF=0.04	GT:DP:AF	0/1:8:0.04

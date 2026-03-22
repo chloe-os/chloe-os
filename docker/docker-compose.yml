@@ -1,0 +1,40 @@
+services:
+  chloe:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ../examples:/app/examples:ro
+      - ./output:/app/output
+      - vep-cache:/root/.vep
+    environment:
+      - CHLOE_OUTPUT_DIR=/app/output
+    command: ["--help"]
+
+  # Run guided mode
+  # docker compose run --rm chloe-guided
+  chloe-guided:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+      - vep-cache:/root/.vep
+    stdin_open: true
+    tty: true
+    command: ["guided"]
+
+  # Download VEP cache for canine genome
+  # docker compose run --rm vep-setup
+  vep-setup:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - vep-cache:/root/.vep
+    entrypoint: ["perl", "/opt/ensembl-vep/INSTALL.pl"]
+    command: ["--AUTO", "cf", "--SPECIES", "canis_lupus_familiaris", "--ASSEMBLY", "CanFam3.1", "--NO_UPDATE"]
+
+volumes:
+  vep-cache:
