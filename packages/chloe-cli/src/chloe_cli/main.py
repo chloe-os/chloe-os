@@ -13,13 +13,15 @@ from rich.console import Console
 from rich.panel import Panel
 
 from chloe_cli import __version__
+from chloe_cli.heart_commands import heart_app
 
 app = typer.Typer(
     name="chloe",
-    help="Chloe OS \u2014 Personalized cancer vaccine pipeline for pets",
+    help="Chloe OS \u2014 Open Source Intelligence for Lifelong Pet Health",
     no_args_is_help=True,
     rich_markup_mode="rich",
 )
+app.add_typer(heart_app, name="heart")
 
 console = Console()
 

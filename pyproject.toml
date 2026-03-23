@@ -11,6 +11,7 @@ authors = [
 dependencies = [
     "chloe-core",
     "chloe-cli",
+    "chloe-heart",
     "pytest>=8.0.0",
     "pytest-cov>=5.0.0",
     "ruff>=0.8.0",
@@ -35,6 +36,7 @@ members = ["packages/*"]
 [tool.uv.sources]
 chloe-core = { workspace = true }
 chloe-cli = { workspace = true }
+chloe-heart = { workspace = true }
 
 [tool.ruff]
 target-version = "py311"
@@ -44,5 +46,5 @@ line-length = 100
 select = ["E", "F", "W", "I", "N", "UP", "B", "A", "SIM", "TCH"]
 
 [tool.pytest.ini_options]
-testpaths = ["packages/chloe-core/tests", "packages/chloe-cli/tests", "tests"]
+testpaths = ["packages/chloe-core/tests", "packages/chloe-cli/tests", "packages/chloe-heart/tests", "tests"]
 addopts = "-v --tb=short"
